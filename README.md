@@ -89,6 +89,7 @@ Tous les joueurs ont perdu leurs vies ou atteint la limite de 15 bonnes réponse
 
 **Tableau des scores final :**  
 
+```
 +------------------+
 |  🏆 SCORE FINAL  |
 +------------------+
@@ -96,6 +97,6 @@ Tous les joueurs ont perdu leurs vies ou atteint la limite de 15 bonnes réponse
 | Bob     |  2 pts |
 | Charlie |  3 pts |
 +------------------+
-
+```
 
 Merci d’avoir joué à *Qui veut gagner des bonbons ?* 🍬🎉  
