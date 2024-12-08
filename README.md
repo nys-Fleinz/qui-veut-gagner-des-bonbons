@@ -59,9 +59,9 @@ Charlie : **60**
 Question : "Quelle est la racine carrée de 16 ?"  
 Alice : **5**  
 ❌ Mauvaise réponse...  
-💔 Alice perd deux vie !  
+💔 Alice perd deux vies !  
 👉 Total de points : **1**  
-👉 Vies restantes : ❤️❤️  
+👉 Vies restantes : ❤️
 
 ---
 
@@ -100,3 +100,5 @@ Tous les joueurs ont perdu leurs vies ou atteint la limite de 15 bonnes réponse
 ```
 
 Merci d’avoir joué à *Qui veut gagner des bonbons ?* 🍬🎉  
+
+GitHub: [Repository](https://github.com/nys-Fleinz/qui-veut-gagner-des-bonbons)

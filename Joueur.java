@@ -1,6 +1,6 @@
 class Joueur {
     String nom;
     int points;
-    int bonneReponse=0;
-    int mauvaiseReponse=0;
+    int bonnesReponses=0;
+    int mauvaisesReponses=0;
 }

@@ -42,7 +42,7 @@ Question : "Combien de secondes dans une minute ?"
 Charlie : **60**  
 ✅ Bonne réponse ! Bravo Charlie 🎉 (+2 points)  
 👉 Total de points : **2**  
-👉 Vies restantes : ❤️❤️❤️  
+👉 Vies restantes : ❤️❤️❤️
 
 ---
 
@@ -53,9 +53,9 @@ Charlie : **60**
 Question : "Quelle est la racine carrée de 16 ?"  
 Alice : **5**  
 ❌ Mauvaise réponse...  
-💔 Alice perd deux vie !  
+💔 Alice perd deux vies !  
 👉 Total de points : **1**  
-👉 Vies restantes : ❤️❤️  
+👉 Vies restantes : ❤️
 
 ---
 
@@ -64,7 +64,7 @@ Question : "En quelle année a eu lieu la Révolution française ?"
 Bob : **1789**  
 ✅ Bonne réponse ! Bravo Bob 🎉 (+1 point)  
 👉 Total de points : **2**  
-👉 Vies restantes : ❤️❤️❤️  
+👉 Vies restantes : ❤️❤️❤️
 
 ---
 
