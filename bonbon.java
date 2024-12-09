@@ -85,7 +85,7 @@ class bonbon extends Program {
             println("Bonne réponse "+joueur.nom+"\n\n\n\n");
             resultat=true;
         } else {
-            println("Mauvaise réponse :("+"\n\n\n\n");
+            println("Mauvaise réponse :("+"\n\n\n\n");('')
             resultat=false;
         }
         appliquerEvent(joueur, event, resultat, prix);
