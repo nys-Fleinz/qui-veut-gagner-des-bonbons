@@ -69,7 +69,7 @@ class bonbon extends Program {
         if(!equals(event[0], "no_event")) {
             println("[🎲] "+ANSI_YELLOW+event[0]+" "+ANSI_BLUE+event[1]);
         }
-        println(ANSI_GREEN+question[0]+ANSI_RESET+"\n (🍬 "+prix+" bonbons)");
+        println(ANSI_GREEN+question[0]+" "+ANSI_RESET+ ANSI_CYAN+ANSI_UNDERLINE+"(🍬 "+prix+" bonbons)"+ANSI_RESET);
         println(header);
         println(reponses);
         return repondreQuestion(joueur, question, event, prix, joueurs);
@@ -77,18 +77,21 @@ class bonbon extends Program {
 
     boolean repondreQuestion(Joueur joueur, String[] question, String[] event, int prix, Joueurs joueurs) {
         int numeroBonneReponse=stringToInt(question[stringToInt(question[1])+2]); //récupérer le numéro de la bonne réponse en fonction du nombre de réponse
-        println("BONNE REPONSE: "+(numeroBonneReponse)+" ("+question[numeroBonneReponse+1]+")");
-        print(ANSI_BLUE+"[🍬] "+ANSI_GREEN+"Numéro de la réponse: "+ANSI_PURPLE);
+        print(ANSI_BLUE+"\n[🍬] "+ANSI_GREEN+"Numéro de la réponse: "+ANSI_PURPLE);
         int reponse = readInt();
         boolean resultat;
         if(reponse==numeroBonneReponse) {
-            println("Bonne réponse "+joueur.nom);
+            println(ANSI_GREEN+"[✅] Bonne réponse :)"+joueur.nom);
+            joueur.points+=prix;
+            joueur.bonnesReponses+=1;
             resultat=true;
         } else {
-            println("Mauvaise réponse :(");
+            println(ANSI_RED+"[❌] Mauvaise réponse :(");
             resultat=false;
+            joueur.mauvaisesReponses+=-1;
         }
         appliquerEvent(joueur, event, resultat, prix, joueurs);
+        delay(2000);
         printStats(joueur);
         return resultat;
     }
@@ -100,11 +103,12 @@ class bonbon extends Program {
         println(ANSI_GREEN + "Points : " + ANSI_YELLOW + joueur.points + ANSI_RESET);
         println(ANSI_GREEN + "Bonnes réponses : " + ANSI_YELLOW + joueur.bonnesReponses + ANSI_RESET);
         println(ANSI_GREEN + "Mauvaises réponses : " + ANSI_YELLOW + joueur.mauvaisesReponses + ANSI_RESET);
-        println(ANSI_GREEN + "Vies restantes : " + (joueur.vies > 1 ? ANSI_YELLOW : ANSI_RED) + joueur.vies + ANSI_RESET);
-        println(ANSI_GREEN + "Statut : " + (joueur.bloque ? ANSI_RED + "Bloqué" : ANSI_YELLOW + "Actif") + ANSI_RESET);
+        println(ANSI_GREEN + "Vies restantes : " + (joueur.vies>1 ? ANSI_YELLOW : ANSI_RED) + joueur.vies + ANSI_RESET);
         println(ANSI_BLUE + "============================" + ANSI_RESET);
     }
 
+
+    // EVENTS
     void appliquerEvent(Joueur joueur, String[] event, boolean resultat, int prix, Joueurs joueurs) {
         if(!equals(event[0], "no_event")) {
 
@@ -112,7 +116,7 @@ class bonbon extends Program {
             if (equals(event[0], "Double Points")) {
                 if (resultat) {
                     joueur.points=joueur.points+prix;
-                    println("💥 Double Points ! Les points de la questions précédentes sont doublés.");
+                    println("[💥] Double Points ! Les points de la questions précédentes sont doublés.");
                 }
             }
             
@@ -120,14 +124,14 @@ class bonbon extends Program {
             else if (equals(event[0], "Question Bonus")) {
                 if (resultat) {
                     joueur.points= joueur.points+10;
-                    println("✨ Question Bonus ! Tu gagnes 10 points.");
+                    println("[✨] Question Bonus ! Tu gagnes 10 points.");
                 }
             } 
             
             // Récupère une Vie
             else if (equals(event[0], "Récupère une Vie")) {
                 joueur.vies=joueur.vies+1;
-                println("❤️ Tu récupères une vie!");
+                println("[❤️] Tu récupères une vie!");
             } 
             
             // Échange de Points
@@ -138,7 +142,7 @@ class bonbon extends Program {
                     joueurs.joueur[numeroJoueurEchanger].points=joueur.points;
                     joueur.points=temp;
                     clearScreen();
-                    println("🔄 Échange de Points ! Tes points ont été échangés avec " + joueurs.joueur[numeroJoueurEchanger].nom + ".");
+                    println("[🔄] Échange de Points ! Tes points ont été échangés avec " + joueurs.joueur[numeroJoueurEchanger].nom + ".");
                     printStats(joueur);
                     printStats(joueurs.joueur[numeroJoueurEchanger]);
                     readString();
@@ -159,7 +163,7 @@ class bonbon extends Program {
                     print("Numéro du joueur à bloquer: ");
                     int numeroJoueurBloque = readInt()-1;
                     joueurs.joueur[numeroJoueurBloque].bloque=true;
-                    println("🚫 Bloque Ton Adversaire ! " + joueurs.joueur[numeroJoueurBloque].nom + " est bloqué pour un tour.");
+                    println(ANSI_BLUE+"[🚫] Bloque Ton Adversaire ! " + ANSI_RED + joueurs.joueur[numeroJoueurBloque].nom + ANSI_BLUE+" est bloqué pour un tour.");
                 }
             } 
             
@@ -167,7 +171,7 @@ class bonbon extends Program {
             else if (equals(event[0], "Immunité")) {
                 if(!resultat) {
                     joueur.vies=joueur.vies+1;
-                    println("🛡️ Immunité ! Tu n'as pas perdu de vie ce tour.");
+                    println("[🛡️] Immunité ! Tu n'as pas perdu de vie ce tour.");
                 }
             }
             
@@ -175,7 +179,7 @@ class bonbon extends Program {
             else if (equals(event[0], "Perte Totale")) {
                 if(!resultat) {
                     joueur.vies=0;
-                    println("☠️ Perte Totale ! Tous tes points sont perdus.");
+                    println("[☠️] Perte Totale ! Tous tes points sont perdus.");
                 }
             } 
             
@@ -183,14 +187,14 @@ class bonbon extends Program {
             else if (equals(event[0], "Gain Surprise")) {
                 int pointsGagnes = (int) (random()*20) + 1;
                 joueur.points=joueur.points+pointsGagnes;
-                println("🎁 Gain Surprise ! Tu gagnes " + pointsGagnes + " points.");
+                println("[🎁] Gain Surprise ! Tu gagnes " + pointsGagnes + " points.");
             } 
             
             // Question Fatale
             else if (equals(event[0], "Question Fatale")) {
                 if (!resultat) {
                     joueur.vies=joueur.vies-2;
-                    println("☠️ Question Fatale ! Mauvaise réponse : tu perds 2 vies.");
+                    println("[☠️] Question Fatale ! Mauvaise réponse : tu perds 2 vies.");
                 }
             }
         }
@@ -214,6 +218,7 @@ class bonbon extends Program {
 
     void tour(Joueurs joueurs, boolean[] questionsPosees) {
         for(int i=0; i<length(joueurs.joueur); i=i+1) {
+            clearScreen();
             poserQuestion(joueurs.joueur[i], donnerQuestion(questionsPosees), joueurs);
         }
     }
