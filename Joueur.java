@@ -4,4 +4,5 @@ class Joueur {
     int bonnesReponses=0;
     int mauvaisesReponses=0;
     int vies=3;
+    boolean bloque=false;
 }
