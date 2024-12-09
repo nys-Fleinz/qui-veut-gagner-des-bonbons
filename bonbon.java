@@ -277,7 +277,22 @@ class bonbon extends Program {
 
     boolean partieTerminee(Joueurs joueurs) {
         boolean termine=false;
-        return true;
+        int compteur=0;
+        int elimines=0;
+        while(compteur<length(joueurs.joueur) && !termine) {
+            if(joueurElimine(joueurs.joueur[compteur])) {
+                elimines=elimines+1;
+            }
+            if(joueurs.joueur[compteur].bonnesReponses>=10) {
+                termine=true;
+            }
+            compteur=compteur+1;
+        }
+
+        if(compteur==elimines) {
+            termine=true;
+        }
+        return termine;
     }
 
     void tour(Joueurs joueurs, boolean[] questionsPosees) {
