@@ -95,12 +95,17 @@ class bonbon extends Program {
             println(ANSI_RED+"[❌] Mauvaise réponse :(");
             resultat=false;
             if(!(joueur.mauvaisesReponses<=0)) { //permets de ne pas avoir de nombres négatifs
-                joueur.mauvaisesReponses+=-1; //enlever une vie
+                joueur.mauvaisesReponses+=-1;
+            }
+            if(!(joueur.vies<=0)) { //permets de ne pas avoir de nombres négatifs
+                joueur.vies+=-1;
             }
         }
         appliquerEvent(joueur, event, resultat, prix, joueurs);
+        if(joueurElimine(joueur)) {
+            println("[☠️] Vous-êtes éliminé.");
+        }
         delay(2000);
-        printStats(joueur);
         return resultat;
     }
 
@@ -116,6 +121,43 @@ class bonbon extends Program {
         println(ANSI_BLUE   + "============================" + ANSI_RESET);
     }
 
+    void printTableauScores(Joueurs joueurs) {
+        clearScreen();
+        println(ANSI_BLUE + "\n======= Tableau des Scores ========" + ANSI_RESET);
+        //AFFICHAGE HEADER
+        println(ANSI_YELLOW+"|"+ANSI_PURPLE+" JOUEURS          "+ANSI_YELLOW+" | "+ANSI_RED+"PTS "+ANSI_YELLOW+"| "+ANSI_GREEN+" VIES  "+ANSI_YELLOW+"|");
+        // Parcours des joueurs pour afficher leurs stats
+        for (int i = 0; i < joueurs.nbJoueurs; i++) {
+            Joueur joueur = joueurs.joueur[i];
+            String nom = joueur.nom;
+            int points = joueur.points;
+            int vies = joueur.vies;
+            // Affichage des stats pour chaque joueur
+            println(ANSI_YELLOW+"| "+ANSI_PURPLE+nom + genererCaracteres(18-length(nom), ' ')+
+            ANSI_YELLOW+"| "+ANSI_RED+points+genererCaracteres(4-length(""+points), ' ')+ANSI_YELLOW
+            +"| "+ viesToString(vies)+genererCaracteres((3-vies)*2, ' ') + ANSI_YELLOW+" |");
+        }
+
+        println(ANSI_BLUE + "====================================" + ANSI_RESET);
+    }
+
+    boolean joueurElimine(Joueur joueur) {
+        boolean vf=false;
+        if(joueur.vies<=0) {
+            vf=true;
+        }
+        return vf;
+    }
+
+    String genererCaracteres(int nombre, char car) {
+        String generation="";
+        for(int i=0; i<nombre; i=i+1) {
+            generation=generation+car;
+        }
+        return generation;
+    }
+
+
     //Retourner un string avec le nombre de vies por l'affichage
     String viesToString(int nombreDeVies) {
         String affichage="";
@@ -128,7 +170,6 @@ class bonbon extends Program {
     // EVENTS
     void appliquerEvent(Joueur joueur, String[] event, boolean resultat, int prix, Joueurs joueurs) {
         if (!equals(event[0], "no_event")) {
-
             // Double Points
             if (equals(event[0], "Double Points")) {
                 if (resultat) {
@@ -162,6 +203,7 @@ class bonbon extends Program {
                     println(ANSI_BLUE + "[🔄] Échange de Points ! " + ANSI_RESET + "Tes points ont été échangés avec " + joueurs.joueur[numeroJoueurEchanger].nom + ".");
                     printStats(joueur);
                     printStats(joueurs.joueur[numeroJoueurEchanger]);
+                    print("Appuyez sur entrée pour continuer...");
                     readString();
                 }
             }
@@ -233,10 +275,17 @@ class bonbon extends Program {
         return numeroQuestion;
     }
 
+    boolean partieTerminee(Joueurs joueurs) {
+        boolean termine=false;
+        return true;
+    }
+
     void tour(Joueurs joueurs, boolean[] questionsPosees) {
         for(int i=0; i<length(joueurs.joueur); i=i+1) {
-            clearScreen();
-            poserQuestion(joueurs.joueur[i], donnerQuestion(questionsPosees), joueurs);
+            if(!joueurElimine(joueurs.joueur[i])) {
+                clearScreen();
+                poserQuestion(joueurs.joueur[i], donnerQuestion(questionsPosees), joueurs);
+            }
         }
     }
 
@@ -261,6 +310,11 @@ class bonbon extends Program {
         boolean[] questionsPosees = new boolean[rowCount(questions)];
         initialiserTableauReponses(questionsPosees);
 
-        tour(joueurs, questionsPosees);
+        while(!partieTerminee(joueurs)) {
+            tour(joueurs, questionsPosees);
+            printTableauScores(joueurs);
+            print("\nAppuyez pour continuer...");
+            readString();
+        }
     }
 }
