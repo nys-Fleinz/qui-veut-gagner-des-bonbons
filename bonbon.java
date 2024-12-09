@@ -21,19 +21,22 @@ class bonbon extends Program {
         return joueur;
     }
 
+
+    //Crée le tableau de joueurs à l'aide du nombre de l'entrée utilisateur 
     Joueurs CreerJoueurs() {
-        println("Combien de joueurs êtes-vous?");
+        println("Combien de joueurs êtes-vous?"); //demander le nombre de joueurs
         int nombreJoueurs = readInt();
         Joueurs tab = new Joueurs();
         tab.joueur = new Joueur[nombreJoueurs];
         for(int i=0; i<nombreJoueurs; i=i+1) {
-            println("Insérez le nom du joueur numéro "+ANSI_BLUE+(i+1)+ANSI_RESET+": ");
+            println("Insérez le nom du joueur numéro "+ANSI_BLUE+(i+1)+ANSI_RESET+": "); //demander le nom de chaque joueur numéro i
             tab.joueur[i] = newJoueur(readString());
             tab.nbJoueurs=tab.nbJoueurs+1;
         }
         return tab;
     }
 
+    //Retourner un tableau de String d'une ligne au hasard du fichier events.csv
     String[] getEvent() {
         String[] ligne = new String[columnCount(eventsCSV)];
         int eventRandom = (int) (random()*(rowCount(eventsCSV)-1)+1);
@@ -47,6 +50,7 @@ class bonbon extends Program {
         return ligne;
     }
 
+    //récupérer un tableau de String d'une ligne aléatoire du fichier questions.csv
     String[] getQuestion(int numeroQuestion) {
         String[] ligne = new String[columnCount(questions, numeroQuestion)];
         for(int i=0; i<length(ligne); i=i+1) {
