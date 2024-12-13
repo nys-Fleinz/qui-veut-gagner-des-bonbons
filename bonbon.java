@@ -103,7 +103,7 @@ class bonbon extends Program {
         }
         appliquerEvent(joueur, event, resultat, prix, joueurs);
         if(joueurElimine(joueur)) {
-            println("[☠️] Vous-êtes éliminé.");
+            println("[☠️ ] Vous-êtes éliminé.");
         }
         delay(2000);
         return resultat;
@@ -162,7 +162,7 @@ class bonbon extends Program {
     String viesToString(int nombreDeVies) {
         String affichage="";
         for(int i=0; i<nombreDeVies; i=i+1) {
-            affichage=affichage+"❤️";
+            affichage=affichage+"❤️ ";
         }
         return affichage;
     }
@@ -238,7 +238,7 @@ class bonbon extends Program {
             else if (equals(event[0], "Mort instantanée")) {
                 if (!resultat) {
                     joueur.vies = 0;
-                    println(ANSI_RED + "[☠️] Mort instantanée ! " + ANSI_RESET + "Tu es éliminé !");
+                    println(ANSI_RED + "[☠️ ] Mort instantanée ! " + ANSI_RESET + "Tu es éliminé !");
                 }
             }
 
@@ -283,13 +283,14 @@ class bonbon extends Program {
             if(joueurElimine(joueurs.joueur[compteur])) {
                 elimines=elimines+1;
             }
-            if(joueurs.joueur[compteur].bonnesReponses>=10) {
+            if(joueurs.joueur[compteur].bonnesReponses>=10) { // FINI SI UN JOUEUR A DIX REPONSES
                 termine=true;
             }
+
             compteur=compteur+1;
         }
 
-        if(compteur==elimines) {
+        if(compteur==elimines) { // FINI SI TOUS LES JOUEURS SONT MORTS
             termine=true;
         }
         return termine;
@@ -310,13 +311,13 @@ class bonbon extends Program {
 
     void algorithm() {
         clearScreen();
-        println(ANSI_BLUE + "[" + "🎮" + ANSI_BLUE + "] " + ANSI_GREEN + "Bienvenue dans '" + nomDuJeu + "'\n" + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "📜" + ANSI_BLUE + "] " + ANSI_YELLOW + "Règle 1: Chaque joueur commence avec 3 vies." + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "🍬" + ANSI_BLUE + "] " + ANSI_YELLOW + "Règle 2: Une bonne réponse donne des points, une mauvaise fait perdre une vie." + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "✨" + ANSI_BLUE + "] " + ANSI_YELLOW + "Règle 3: Atteignez 10 bonnes réponses pour gagner !" + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "🎲" + ANSI_BLUE + "] " + ANSI_YELLOW + "Règle 4: Certains tours incluent des bonus aléatoires !" + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "💔" + ANSI_BLUE + "] " + ANSI_RED + "Règle 5: Si vous perdez vos 3 vies, vous êtes éliminé." + ANSI_RESET);
-        println(ANSI_BLUE + "[" + "🏆" + ANSI_BLUE + "] " + ANSI_PURPLE + "Bonne chance et amusez-vous bien !\n\n" + ANSI_RESET);
+        println(ANSI_BLUE + "[🎮]" + ANSI_GREEN  + "Bienvenue dans '" + nomDuJeu + "'\n" + ANSI_RESET);
+        println(ANSI_BLUE + "[📜]" + ANSI_YELLOW + "Règle 1: Chaque joueur commence avec 3 vies." + ANSI_RESET);
+        println(ANSI_BLUE + "[🍬]" + ANSI_YELLOW + "Règle 2: Une bonne réponse donne des points, une mauvaise fait perdre une vie." + ANSI_RESET);
+        println(ANSI_BLUE + "[✨]" + ANSI_YELLOW + "Règle 3: Atteignez 10 bonnes réponses pour gagner !" + ANSI_RESET);
+        println(ANSI_BLUE + "[🎲]" + ANSI_YELLOW + "Règle 4: Certains tours incluent des bonus aléatoires !" + ANSI_RESET);
+        println(ANSI_BLUE + "[💔]" + ANSI_RED    + "Règle 5: Si vous perdez vos 3 vies, vous êtes éliminé." + ANSI_RESET);
+        println(ANSI_BLUE + "[🏆]" + ANSI_PURPLE + "Bonne chance et amusez-vous bien !\n\n" + ANSI_RESET);
 
         // INITIALISER JOUEURS
         Joueurs joueurs = CreerJoueurs();
@@ -331,5 +332,8 @@ class bonbon extends Program {
             print("\nAppuyez pour continuer...");
             readString();
         }
+
+        println("Partie terminée bravo aux joueurs!");
+        printTableauScores(joueurs);
     }
 }
