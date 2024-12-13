@@ -62,23 +62,38 @@ class bonbon extends Program {
     boolean poserQuestion(Joueur joueur, int numeroQuestion, Joueurs joueurs) {
         String[] event = getEvent();
         String[] question = getQuestion(numeroQuestion);
-        String reponses="";
-        String header="";
+        // String header="";
+        // String reponses="";
         int prix = (int) (random()*11)+10;
-        for(int i=0; i<stringToInt(question[1]); i=i+1) {
-            reponses=reponses+question[i+2]+"\t";
-            header=header+ANSI_BLUE+"REPONSE "+ANSI_PURPLE+(i+1)+"\t";
-        }
+
         println(ANSI_GREEN+joueur.nom+ANSI_PURPLE+" à ton tour !\n");
         if(!equals(event[0], "no_event")) {
             println("[🎲] "+ANSI_YELLOW+event[0]+" "+ANSI_BLUE+event[1]);
         }
+
         println(ANSI_GREEN+ "[❓] " +question[0]+ANSI_RESET+ ANSI_CYAN+" (🍬 "+prix+" bonbons)"+ANSI_RESET);
-        println(header);
-        println(reponses);
+
+        afficherQuestion(question);
+        // for(int i=0; i<stringToInt(question[1]); i=i+1) {
+        //     reponses=reponses+question[i+2]+"\t";
+        //     header=header+ANSI_BLUE+"REPONSE "+ANSI_PURPLE+(i+1)+"\t";
+        // }
+        // println(header);
+        // println(reponses);
         return repondreQuestion(joueur, question, event, prix, joueurs);
     }
 
+    void afficherQuestion(String[] question){
+        String header = "";
+        String reponses ="";
+        int position = 0;
+
+        for(int i=0; i<stringToInt(question[1]); i=i+1) {
+            print(ANSI_BLUE+"REPONSE "+ANSI_PURPLE+(i+1)+" -> ");
+            print(question[i+2]);
+            println();
+        }
+    }
 
     //Traîter les entrées utilisateurs et quelques affichages
     boolean repondreQuestion(Joueur joueur, String[] question, String[] event, int prix, Joueurs joueurs) {
