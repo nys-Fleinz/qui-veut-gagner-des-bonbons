@@ -85,96 +85,164 @@ class bonbon extends Program {
         } else {
             println("Mauvaise réponse :("+"\n\n\n\n");
             resultat=false;
-            if(!(joueur.mauvaisesReponses<=0)) { //permets de ne pas avoir de nombres négatifs
-                joueur.mauvaisesReponses+=-1;
-            }
-            if(!(joueur.vies<=0)) { //permets de ne pas avoir de nombres négatifs
-                joueur.vies+=-1;
-            }
+            joueur.mauvaisesReponses+=1;
+            joueur.vies=joueur.vies-1;
         }
-        appliquerEvent(joueur, event, resultat, prix);
+        appliquerEvent(joueur, event, resultat, prix, joueurs);
+        if(joueurElimine(joueur)) {
+            println("[☠️ ] Vous-êtes éliminé.");
+        }
+        delay(2000);
         return resultat;
     }
 
-    void appliquerEvent(Joueur joueur, String[] event, boolean resultat, int prix) {
-        if(!equals(event[0], "no_event")) {
+    //Afficher les stats joueur
+    void printStats(Joueur joueur) {
+        println(ANSI_BLUE   + "============================");
+        println(ANSI_PURPLE + "📊 Statistiques de " + joueur.nom + " 📊" + ANSI_RESET);
+        println(ANSI_BLUE   + "============================" + ANSI_RESET);
+        println(ANSI_GREEN  + "[🍬] Points : " + ANSI_YELLOW + joueur.points + ANSI_RESET);
+        println(ANSI_GREEN  + "[✅] Bonnes réponses : " + ANSI_YELLOW + joueur.bonnesReponses + ANSI_RESET);
+        println(ANSI_GREEN  + "[❌] Mauvaises réponses : " + ANSI_YELLOW + joueur.mauvaisesReponses + ANSI_RESET);
+        println(ANSI_GREEN  + "[❤️] Vies restantes : " + viesToString(joueur.vies) + ANSI_RESET);
+        println(ANSI_BLUE   + "============================" + ANSI_RESET);
+    }
 
-            //     // Double Points
-            // if (equals(event[0], "Double Points")) {
-            //     if (resultat) {
-            //         joueur.setPoints(joueur.getPoints() + prix * 2); // Double les points
-            //         System.out.println("💥 Double Points ! Tes points sont doublés.");
-            //     }
-            // } 
-            
-            // // Perte de Vie
-            // else if (equals(event[0], "Perte de Vie")) {
-            //     joueur.perdreVie();
-            //     System.out.println("💔 Perte de Vie ! Tu as perdu une vie.");
-            // } 
-            
-            // // Question Bonus
-            // else if (equals(event[0], "Question Bonus")) {
-            //     if (resultat) {
-            //         joueur.setPoints(joueur.getPoints() + 2); // Ajoute 2 points
-            //         System.out.println("✨ Question Bonus ! Tu gagnes 2 points.");
-            //     }
-            // } 
-            
-            // // Récupère une Vie
-            // else if (equals(event[0], "Récupère une Vie")) {
-            //     if (joueur.getVies() < joueur.getMaxVies()) {
-            //         joueur.gagnerVie();
-            //         System.out.println("❤️ Récupère une Vie ! Tu récupères une vie.");
-            //     } else {
-            //         System.out.println("🔴 Tu as déjà toutes tes vies !");
-            //     }
-            // } 
-            
-            // // Échange de Points
-            // else if (equals(event[0], "Échange de Points")) {
-            //     Joueur autreJoueur = choisirJoueurAleatoire(); // Méthode à implémenter
-            //     int temp = joueur.getPoints();
-            //     joueur.setPoints(autreJoueur.getPoints());
-            //     autreJoueur.setPoints(temp);
-            //     System.out.println("🔄 Échange de Points ! Tes points ont été échangés avec " + autreJoueur.getNom() + ".");
-            // } 
-            
-            // // Bloque Ton Adversaire
-            // else if (equals(event[0], "Bloque Ton Adversaire")) {
-            //     Joueur adversaire = choisirJoueurAleatoire(); // Méthode à implémenter
-            //     adversaire.setBloque(true); // Suppose que le joueur a un statut "bloqué"
-            //     System.out.println("🚫 Bloque Ton Adversaire ! " + adversaire.getNom() + " est bloqué pour un tour.");
-            // } 
-            
-            // // Immunité
-            // else if (equals(event[0], "Immunité")) {
-            //     if(!resultat) {
-            //         joueur.vies=joueur.vies+1;
-            //         println("🛡️ Immunité ! Tu n'as pas perdu de vie ce tour.");
-            //     }
-            // } 
-            
-            // // Mort instantanée
-            // else if (equals(event[0], "Perte Totale")) {
-            //     joueur.vies=0;
-            //     println("☠️ Perte Totale ! Tous tes points sont perdus.");
-            // } 
-            
-            // // Gain Surprise
-            // else if (equals(event[0], "Gain Surprise")) {
-            //     int pointsGagnes = (int) (random()*20) + 1;
-            //     joueur.points=joueur.points+pointsGagnes;
-            //     println("🎁 Gain Surprise ! Tu gagnes " + pointsGagnes + " points.");
-            // } 
-            
-            // // Question Fatale
-            // else if (equals(event[0], "Question Fatale")) {
-            //     if (!resultat) {
-            //         joueur.vies=joueur.vies-2;
-            //         println("☠️ Question Fatale ! Mauvaise réponse : tu perds 2 vies.");
-            //     }
-            // }
+    void printTableauScores(Joueurs joueurs) {
+        clearScreen();
+        println(ANSI_BLUE + "\n======= Tableau des Scores ========" + ANSI_RESET);
+        //AFFICHAGE HEADER
+        println(ANSI_YELLOW+"|"+ANSI_PURPLE+" JOUEURS          "+ANSI_YELLOW+" | "+ANSI_RED+"PTS "+ANSI_YELLOW+"| "+ANSI_GREEN+" VIES  "+ANSI_YELLOW+"|");
+        // Parcours des joueurs pour afficher leurs stats
+        for (int i = 0; i < joueurs.nbJoueurs; i++) {
+            Joueur joueur = joueurs.joueur[i];
+            String nom = joueur.nom;
+            int points = joueur.points;
+            int vies = joueur.vies;
+            // Affichage des stats pour chaque joueur
+            println(ANSI_YELLOW+"| "+ANSI_PURPLE+nom + genererCaracteres(18-length(nom), ' ')+
+            ANSI_YELLOW+"| "+ANSI_RED+points+genererCaracteres(4-length(""+points), ' ')+ANSI_YELLOW
+            +"| "+ viesToString(vies)+genererCaracteres((3-vies)*2, ' ') + ANSI_YELLOW+" |");
+        }
+
+        println(ANSI_BLUE + "====================================" + ANSI_RESET);
+    }
+
+    boolean joueurElimine(Joueur joueur) {
+        boolean vf=false;
+        if(joueur.vies<=0) {
+            vf=true;
+        }
+        return vf;
+    }
+
+    String genererCaracteres(int nombre, char car) {
+        String generation="";
+        for(int i=0; i<nombre; i=i+1) {
+            generation=generation+car;
+        }
+        return generation;
+    }
+
+
+    //Retourner un string avec le nombre de vies por l'affichage
+    String viesToString(int nombreDeVies) {
+        String affichage="";
+        for(int i=0; i<nombreDeVies; i=i+1) {
+            affichage=affichage+"❤️ ";
+        }
+        return affichage;
+    }
+
+    // EVENTS
+    void appliquerEvent(Joueur joueur, String[] event, boolean resultat, int prix, Joueurs joueurs) {
+        if (!equals(event[0], "no_event")) {
+            // Double Points
+            if (equals(event[0], "Double Points")) {
+                if (resultat) {
+                    joueur.points = joueur.points + prix;
+                    println(ANSI_YELLOW + "[💥] Double Points ! " + ANSI_RESET + "Les points de la question précédente sont doublés.");
+                }
+            }
+
+            // Question Bonus
+            else if (equals(event[0], "Question Bonus")) {
+                if (resultat) {
+                    joueur.points = joueur.points + 10;
+                    println(ANSI_GREEN + "[✨] Question Bonus ! " + ANSI_RESET + "Tu gagnes 10 points supplémentaires.");
+                }
+            }
+
+            // Récupère une Vie
+            else if (equals(event[0], "Récupère une Vie")) {
+                joueur.vies = joueur.vies + 1;
+                println(ANSI_RED + "[❤️] Récupère une Vie ! " + ANSI_RESET + "Félicitations, tu récupères une vie !");
+            }
+
+            // Échange de Points
+            else if (equals(event[0], "Échange de Points")) {
+                if (!(length(joueurs.joueur) == 1)) {
+                    int numeroJoueurEchanger = (int) (random() * joueurs.nbJoueurs);
+                    int temp = joueurs.joueur[numeroJoueurEchanger].points;
+                    joueurs.joueur[numeroJoueurEchanger].points = joueur.points;
+                    joueur.points = temp;
+                    clearScreen();
+                    println(ANSI_BLUE + "[🔄] Échange de Points ! " + ANSI_RESET + "Tes points ont été échangés avec " + joueurs.joueur[numeroJoueurEchanger].nom + ".");
+                    printStats(joueur);
+                    printStats(joueurs.joueur[numeroJoueurEchanger]);
+                    print("Appuyez sur entrée pour continuer...");
+                    readString();
+                }
+            }
+
+            // Bloque Ton Adversaire
+            else if (equals(event[0], "Bloque Ton Adversaire")) {
+                if (!(length(joueurs.joueur) == 1)) {
+                    println("Choisis un adversaire à bloquer:");
+                    String listeJoueurs = "";
+                    for (int i = 0; i < length(joueurs.joueur); i = i + 1) {
+                        if (!equals(joueurs.joueur[i].nom, joueur.nom)) {
+                            listeJoueurs = listeJoueurs + " [" + (i + 1) + "] " + joueurs.joueur[i].nom + " ";
+                        }
+                    }
+                    println(listeJoueurs);
+                    print("Numéro du joueur à bloquer: ");
+                    int numeroJoueurBloque = readInt() - 1;
+                    joueurs.joueur[numeroJoueurBloque].bloque = true;
+                    println(ANSI_BLUE + "[🚫] Bloque Ton Adversaire ! " + ANSI_RED + joueurs.joueur[numeroJoueurBloque].nom + ANSI_BLUE + " est bloqué pour un tour." + ANSI_RESET);
+                }
+            }
+
+            // Immunité
+            else if (equals(event[0], "Immunité")) {
+                if (!resultat) {
+                    joueur.vies = joueur.vies + 1;
+                    println(ANSI_CYAN + "[🛡️] Immunité ! " + ANSI_RESET + "Tu ne perds pas de vie ce tour.");
+                }
+            }
+
+            // Mort instantanée
+            else if (equals(event[0], "Mort instantanée")) {
+                if (!resultat) {
+                    joueur.vies = 0;
+                    println(ANSI_RED + "[☠️ ] Mort instantanée ! " + ANSI_RESET + "Tu es éliminé !");
+                }
+            }
+
+            // Gain Surprise
+            else if (equals(event[0], "Gain Surprise")) {
+                int pointsGagnes = (int) (random() * 3) + 1; // Gain aléatoire entre 1 et 3
+                joueur.points = joueur.points + pointsGagnes;
+                println(ANSI_GREEN + "[🎁] Gain Surprise ! " + ANSI_RESET + "Tu gagnes " + pointsGagnes + " points.");
+            }
+
+            // Question Fatale
+            else if (equals(event[0], "Question Fatale")) {
+                if (!resultat) {
+                    joueur.vies = joueur.vies - 2;
+                    println(ANSI_RED + "[☠️] Question Fatale ! " + ANSI_RESET + "Une seule erreur et tu perds 2 vies !");
+                }
+            }
         }
     }
 
@@ -219,6 +287,11 @@ class bonbon extends Program {
         for(int i=0; i<length(joueurs.joueur); i=i+1) {
             poserQuestion(joueurs.joueur[i], donnerQuestion(questionsPosees));
         }
+        printTableauScores(joueurs);
+        if(!partieTerminee(joueurs)) {
+            print("\nAppuyez pour continuer...");
+            readString();
+        }
     }
 
 
@@ -243,12 +316,9 @@ class bonbon extends Program {
 
         while(!partieTerminee(joueurs)) {
             tour(joueurs, questionsPosees);
-            printTableauScores(joueurs);
-            print("\nAppuyez pour continuer...");
-            readString();
         }
 
-        println("Partie terminée bravo aux joueurs!");
         printTableauScores(joueurs);
+        println(ANSI_BLUE+"[>]"+ANSI_PURPLE+" Partie terminée bravo aux joueurs!");
     }
 }
