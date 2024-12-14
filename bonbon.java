@@ -297,10 +297,8 @@ class bonbon extends Program {
             if(joueurs.joueur[compteur].bonnesReponses>=10) { // FINI SI UN JOUEUR A DIX REPONSES
                 termine=true;
             }
-
             compteur=compteur+1;
         }
-
         if(compteur==elimines) { // FINI SI TOUS LES JOUEURS SONT MORTS
             termine=true;
         }
