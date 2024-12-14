@@ -101,18 +101,16 @@ class bonbon extends Program {
         } else {
             println(ANSI_RED+"[❌] Mauvaise réponse :(");
             resultat=false;
-            if(!(joueur.mauvaisesReponses<=0)) { //permets de ne pas avoir de nombres négatifs
-                joueur.mauvaisesReponses+=-1;
-            }
-            if(!(joueur.vies<=0)) { //permets de ne pas avoir de nombres négatifs
-                joueur.vies+=-1;
-            }
+            joueur.mauvaisesReponses+=1;
+            joueur.vies=joueur.vies-1;
         }
         appliquerEvent(joueur, event, resultat, prix, joueurs);
         if(joueurElimine(joueur)) {
             println("[☠️ ] Vous-êtes éliminé.");
         }
-        delay(2000);
+        printStats(joueur);
+        println("Appuyez pour continuer...");
+        readString();
         return resultat;
     }
 
@@ -130,22 +128,26 @@ class bonbon extends Program {
 
     void printTableauScores(Joueurs joueurs) {
         clearScreen();
-        println(ANSI_BLUE + "\n======= Tableau des Scores ========" + ANSI_RESET);
+        println(ANSI_BLUE + "\n=========================== Tableau des Scores ============================" + ANSI_RESET);
         //AFFICHAGE HEADER
-        println(ANSI_YELLOW+"|"+ANSI_PURPLE+" JOUEURS          "+ANSI_YELLOW+" | "+ANSI_RED+"PTS "+ANSI_YELLOW+"| "+ANSI_GREEN+" VIES  "+ANSI_YELLOW+"|");
+        println(ANSI_YELLOW+"|"+ANSI_PURPLE+" JOUEURS          "+ANSI_YELLOW+" | "+ANSI_RED+"PTS "+ANSI_YELLOW+"| "+ANSI_GREEN+" VIES  "+ANSI_YELLOW+"| BONNES REPONSES | MAUVAISES REPONSES |");
         // Parcours des joueurs pour afficher leurs stats
         for (int i = 0; i < joueurs.nbJoueurs; i++) {
             Joueur joueur = joueurs.joueur[i];
             String nom = joueur.nom;
             int points = joueur.points;
             int vies = joueur.vies;
+            int bonnesReponses = joueur.bonnesReponses;
+            int mauvaisesReponses = joueur.mauvaisesReponses;
             // Affichage des stats pour chaque joueur
             println(ANSI_YELLOW+"| "+ANSI_PURPLE+nom + genererCaracteres(18-length(nom), ' ')+
             ANSI_YELLOW+"| "+ANSI_RED+points+genererCaracteres(4-length(""+points), ' ')+ANSI_YELLOW
-            +"| "+ viesToString(vies)+genererCaracteres((3-vies)*2, ' ') + ANSI_YELLOW+" |");
+            +"| "+ viesToString(vies)+genererCaracteres((3-vies)*2, ' ') + ANSI_YELLOW+" |"+
+            genererCaracteres(17/2, ' ')+bonnesReponses+ genererCaracteres((17/2)-length(""+bonnesReponses)+1, ' ') +"|"+
+            genererCaracteres(20/2, ' ') + mauvaisesReponses + genererCaracteres((20/2)-length(""+mauvaisesReponses), ' ')+"|");
         }
 
-        println(ANSI_BLUE + "====================================" + ANSI_RESET);
+        println(ANSI_BLUE + "===========================================================================" + ANSI_RESET);
     }
 
     boolean joueurElimine(Joueur joueur) {
@@ -195,8 +197,10 @@ class bonbon extends Program {
 
             // Récupère une Vie
             else if (equals(event[0], "Récupère une Vie")) {
-                joueur.vies = joueur.vies + 1;
-                println(ANSI_RED + "[❤️] Récupère une Vie ! " + ANSI_RESET + "Félicitations, tu récupères une vie !");
+                if(!(joueur.vies >= 3)) {
+                    joueur.vies = joueur.vies + 1;
+                    println(ANSI_RED + "[❤️] Récupère une Vie ! " + ANSI_RESET + "Félicitations, tu récupères une vie !");
+                }
             }
 
             // Échange de Points
@@ -310,6 +314,9 @@ class bonbon extends Program {
                 poserQuestion(joueurs.joueur[i], donnerQuestion(questionsPosees), joueurs);
             }
         }
+        printTableauScores(joueurs);
+        print("\nAppuyez pour continuer...");
+        readString();
     }
 
 
@@ -335,12 +342,9 @@ class bonbon extends Program {
 
         while(!partieTerminee(joueurs)) {
             tour(joueurs, questionsPosees);
-            printTableauScores(joueurs);
-            print("\nAppuyez pour continuer...");
-            readString();
         }
 
-        println("Partie terminée bravo aux joueurs!");
         printTableauScores(joueurs);
+        println(ANSI_BLUE+"[>]"+ANSI_PURPLE+" Partie terminée bravo aux joueurs!");
     }
 }
