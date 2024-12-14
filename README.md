@@ -1,104 +1,71 @@
-# qui-veut-gagner-des-bonbons
-SAE r1.01 S1
+# Projet : Jeu de Quiz avec Événements Aléatoires **QUI VEUT GAGNER DES BONBONS**
+
+## Description
+Ce projet est un jeu de quiz multijoueur avec des événements aléatoires qui affectent les scores, les vies et les interactions entre les joueurs. Le jeu est conçu pour être à la fois compétitif et imprévisible, grâce à une variété d'effets qui ajoutent du suspense à chaque tour.
+
+Les joueurs répondent à des questions, gagnent ou perdent des points/vies, et subissent des événements aléatoires qui peuvent changer le cours de la partie.
+Ce projet n'est pas encore terminé.
+
+## Fonctionnalités principales
+- **Système de quiz** : Les joueurs répondent à des questions pour gagner des points.
+- **Système d'événements aléatoires** : 9 événements différents qui modifient le gameplay :
+  1. **Double Points** : Les points de la question précédente sont doublés.
+  2. **Question Bonus** : 10 points supplémentaires si la réponse est correcte.
+  3. **Récupère une Vie** : Le joueur gagne une vie supplémentaire.
+  4. **Échange de Points** : Les points du joueur sont échangés avec un adversaire aléatoire.
+  5. **Bloque Ton Adversaire** : Un joueur adverse perd son tour.
+  6. **Immunité** : Protection contre la perte de vie pendant un tour.
+  7. **Mort Instantanée** : Perte immédiate de toutes les vies.
+  8. **Gain Surprise** : Ajout aléatoire de 1 à 3 points.
+  9. **Question Fatale** : Une mauvaise réponse coûte deux vies.
+- **Affichage des scores** : Une fonction dédiée pour afficher un tableau récapitulatif des scores des joueurs.
 
 
-# **EXEMPLE DU PROJET:**
+## Structure du projet
+- `Joueur` : Classe représentant un joueur, contenant les attributs (nom, points, vies, état bloqué).
+- `Joueurs` : Classe regroupant la liste des joueurs et permettant des interactions entre eux.
+- `appliquerEvent` : Fonction principale pour appliquer les événements aléatoires.
+- `printTableauScores` : Fonction pour afficher les scores dans un tableau formaté.
+- `tour` : Fonction qui détermine le déroulement d'un tour
+- `partieTerminee` : Fonction qui détermiune la fin de partie.
 
-**Qui veut gagner des bonbons ?**  
-🎉 Bienvenue dans *Qui veut gagner des bonbons !* 🎉  
-Console : Entrez le nombre de joueurs :  
-**3**  
-Console : Entrez le nom du joueur 1 :  
-**Alice**  
-Console : Entrez le nom du joueur 2 :  
-**Bob**  
-Console : Entrez le nom du joueur 3 :  
-**Charlie**
 
----
+## Utilisation
+1. Compilez le jeu avec `compile.sh`.
+2. Lancez le jeu avec `run.sh`.
+3. Entrez le nombre de joueurs et leurs noms.
+4. Chaque joueur répond aux questions en tour par tour.
+5. À chaque tour, un événement aléatoire peut se produire, modifiant les scores ou les vies des joueurs.
+6. Le jeu continue jusqu'à ce qu'il ne reste qu'un seul joueur en vie ou qu'une condition de fin soit atteinte.
 
-🎮 Début de la partie 🎮  
-**Alice**, **Bob**, et **Charlie** commencent avec 3 vies chacun. Bonne chance 🍬 !  
-
----
-
-**Tour 1**  
-
-🌀 **Alice**, c'est ton tour !  
-Question : "Combien de pattes a une araignée ?"  
-Alice : **8**  
-✅ Bonne réponse ! Bravo Alice 🎉 (+1 point)  
-👉 Total de points : **1**  
-👉 Vies restantes : ❤️❤️❤️  
-
----
-
-🌀 **Bob**, à toi !  
-Question : "Quelle est la capitale de la France ?"  
-Bob : **Paris**  
-✅ Bonne réponse ! Bravo Bob 🎉 (+1 point)  
-👉 Total de points : **1**  
-👉 Vies restantes : ❤️❤️❤️  
-
----
-
-🌀 **Charlie**, c'est à toi !  
-🎲 Bonus aléatoire : Double points ✨  
-Question : "Combien de secondes dans une minute ?"  
-Charlie : **60**  
-✅ Bonne réponse ! Bravo Charlie 🎉 (+2 points)  
-👉 Total de points : **2**  
-👉 Vies restantes : ❤️❤️❤️  
-
----
-
-**Tour 2**  
-
-🌀 **Alice**, c'est ton tour !  
-🎲 Bonus aléatoire : Double perte de vie si erreur ⚠️  
-Question : "Quelle est la racine carrée de 16 ?"  
-Alice : **5**  
-❌ Mauvaise réponse...  
-💔 Alice perd deux vies !  
-👉 Total de points : **1**  
-👉 Vies restantes : ❤️
-
----
-
-🌀 **Bob**, à toi !  
-Question : "En quelle année a eu lieu la Révolution française ?"  
-Bob : **1789**  
-✅ Bonne réponse ! Bravo Bob 🎉 (+1 point)  
-👉 Total de points : **2**  
-👉 Vies restantes : ❤️❤️❤️  
-
----
-
-🌀 **Charlie**, c'est à toi !  
-Question : "Quel est l’élément chimique pour l’eau ?"  
-Charlie : **H2O**  
-✅ Bonne réponse ! Bravo Charlie 🎉 (+1 point)  
-👉 Total de points : **3**  
-👉 Vies restantes : ❤️❤️❤️  
-
----
-
-**FIN DE PARTIE**  
-
-Tous les joueurs ont perdu leurs vies ou atteint la limite de 15 bonnes réponses.  
-
-**Tableau des scores final :**  
-
-```
-+------------------+
-|  🏆 SCORE FINAL  |
-+------------------+
-| Alice   |  1 pt  |
-| Bob     |  2 pts |
-| Charlie |  3 pts |
-+------------------+
+## Exemple de sortie
 ```
 
-Merci d’avoir joué à *Qui veut gagner des bonbons ?* 🍬🎉  
+Ethan à ton tour !
 
-GitHub: [Repository](https://github.com/nys-Fleinz/qui-veut-gagner-des-bonbons)
+[❓] Quel animal miaule ? (🍬 12 bonbons)
+REPONSE 1 -> Chien
+REPONSE 2 -> Chat
+REPONSE 3 -> Cheval
+
+[🍬] Numéro de la réponse: **2**
+[✅] Bonne réponse :) Ethan
+
+
+======= Tableau des Scores ========
+| JOUEURS           | PTS |  VIES   |
+| Ethan             | 12  | ❤️❤️❤️ |
+| Romain            | 0   | ❤️❤️   |
+====================================
+
+Appuyez pour continuer...
+```
+
+
+## Améliorations à faire
+- Ajouter questions Scratch
+- Ajouter des niveaux de difficulté pour les questions.
+- Enregistrer les scores et statistiques des joueurs dans un fichier ou une base de données.
+
+## Auteur
+- **Ethan** et **Romain**

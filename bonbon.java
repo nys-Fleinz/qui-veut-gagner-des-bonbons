@@ -62,8 +62,6 @@ class bonbon extends Program {
     boolean poserQuestion(Joueur joueur, int numeroQuestion, Joueurs joueurs) {
         String[] event = getEvent();
         String[] question = getQuestion(numeroQuestion);
-        // String header="";
-        // String reponses="";
         int prix = (int) (random()*11)+10;
 
         println(ANSI_GREEN+joueur.nom+ANSI_PURPLE+" à ton tour !\n");
@@ -72,14 +70,8 @@ class bonbon extends Program {
         }
 
         println(ANSI_GREEN+ "[❓] " +question[0]+ANSI_RESET+ ANSI_CYAN+" (🍬 "+prix+" bonbons)"+ANSI_RESET);
-
+        
         afficherQuestion(question);
-        // for(int i=0; i<stringToInt(question[1]); i=i+1) {
-        //     reponses=reponses+question[i+2]+"\t";
-        //     header=header+ANSI_BLUE+"REPONSE "+ANSI_PURPLE+(i+1)+"\t";
-        // }
-        // println(header);
-        // println(reponses);
         return repondreQuestion(joueur, question, event, prix, joueurs);
     }
 
