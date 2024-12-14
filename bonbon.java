@@ -315,8 +315,10 @@ class bonbon extends Program {
             }
         }
         printTableauScores(joueurs);
-        print("\nAppuyez pour continuer...");
-        readString();
+        if(!partieTerminee(joueurs)) {
+            print("\nAppuyez pour continuer...");
+            readString();
+        }
     }
 
 
