@@ -1,1 +1,2 @@
-./*.class
+#EXCLURE LES CLASSES
+*.class
